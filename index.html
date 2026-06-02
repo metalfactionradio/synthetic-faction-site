@@ -9,24 +9,32 @@
 <meta property="og:description" content="AI creative studio for independent music. EPKs, artwork, and the Metal Forge prompt suite.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://syntheticfaction.com">
+<meta property="og:image" content="https://syntheticfaction.com/sf-og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Synthetic Faction — cyber-industrial skull with headphones, branded logo and tagline 'Forging Digital Grit'">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Synthetic Faction — Forging Digital Grit">
+<meta name="twitter:description" content="AI creative studio for independent music. EPKs, artwork, and the Metal Forge prompt suite.">
+<meta name="twitter:image" content="https://syntheticfaction.com/sf-og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#08090b;
-    --steel-900:#0e1014;
-    --steel-800:#14171c;
-    --steel-700:#1b1f26;
-    --steel-600:#272c35;
-    --line:#2c323c;
-    --ash:#7d8694;
-    --ash-dim:#565d68;
+    --void:#121212;
+    --steel-900:#1a1a1a;
+    --steel-800:#1f1f1f;
+    --steel-700:#2B2B2B;
+    --steel-600:#363636;
+    --line:#4A4A4A;
+    --ash:#8a8a8a;
+    --ash-dim:#5e5e5e;
     --bone:#e9e6e1;
-    --acid:#3ef07a;
-    --acid-dim:#2bb85d;
-    --ember:#ff5a1f;
-    --ember-dim:#c8431a;
+    --acid:#00FF41;
+    --acid-dim:#00cc34;
+    --ember:#F05423;
+    --ember-dim:#c0421b;
     --maxw:1180px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -117,19 +125,14 @@
   .stat .n{font-family:'Anton',sans-serif;font-size:1.9rem;color:var(--bone)}
   .stat .l{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ash-dim)}
 
-  /* emblem (swap for real skull art — see note) */
+  /* emblem - real skull art with crop to hide baked-in title text */
   .emblem-wrap{display:flex;justify-content:center;align-items:center;position:relative;opacity:0;animation:rise 1s .4s forwards}
-  .emblem{position:relative;width:min(360px,80%);aspect-ratio:1;border-radius:50%;
-    background:radial-gradient(circle at 50% 38%,var(--steel-700),var(--steel-900) 70%);
-    border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;
-    box-shadow:0 0 80px -20px rgba(62,240,122,.25),inset 0 0 60px rgba(0,0,0,.6);
+  .emblem{position:relative;width:min(380px,85%);aspect-ratio:1;border-radius:6px;overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 0 80px -20px rgba(0,255,65,.18),0 30px 60px -20px rgba(0,0,0,.7);
   }
-  .emblem::before{content:"";position:absolute;inset:14px;border:1px dashed var(--steel-600);border-radius:50%;animation:spin 60s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .emblem .skull{font-family:'Anton',sans-serif;font-size:4.6rem;color:var(--bone);line-height:1;letter-spacing:-.04em}
-  .emblem .eye{position:absolute;top:38%;width:14px;height:14px;border-radius:50%;background:var(--acid);box-shadow:0 0 24px var(--acid);animation:pulse 2s infinite}
-  .emblem .eye.l{left:42%}.emblem .eye.r{right:42%}
-  .emblem .tag{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.3em;color:var(--ash);margin-top:14px;text-transform:uppercase}
+  .emblem img{width:100%;height:160%;object-fit:cover;object-position:center top;display:block;filter:saturate(1.05)}
+  .emblem::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(18,18,18,.7) 100%);pointer-events:none}
 
   /* ---------- MARQUEE ---------- */
   .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--steel-900);overflow:hidden;position:relative;z-index:2}
@@ -269,11 +272,8 @@
         </div>
       </div>
       <div class="emblem-wrap">
-        <!-- SWAP THIS BLOCK for your real skull logo: <img src="logo.png" alt="Synthetic Faction" style="width:min(360px,80%)"> -->
         <div class="emblem">
-          <span class="eye l"></span><span class="eye r"></span>
-          <div class="skull">SF</div>
-          <div class="tag">Synthetic Faction</div>
+          <img src="sf-emblem.jpg" alt="Synthetic Faction — cyber-industrial skull with headphones, glowing ember and matrix-green eyes">
         </div>
       </div>
     </div>
