@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthetic Faction — AI Creative Studio for Independent Music</title>
+<meta name="description" content="Synthetic Faction is an AI-powered creative studio for independent bands and labels. EPK packages, AI artwork, and Metal Forge — the prompt suite for Suno & Udio. Forging Digital Grit.">
+<meta property="og:title" content="Synthetic Faction — Forging Digital Grit">
+<meta property="og:description" content="AI creative studio for independent music. EPKs, artwork, and the Metal Forge prompt suite.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://syntheticfaction.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#08090b;
+    --steel-900:#0e1014;
+    --steel-800:#14171c;
+    --steel-700:#1b1f26;
+    --steel-600:#272c35;
+    --line:#2c323c;
+    --ash:#7d8694;
+    --ash-dim:#565d68;
+    --bone:#e9e6e1;
+    --acid:#3ef07a;
+    --acid-dim:#2bb85d;
+    --ember:#ff5a1f;
+    --ember-dim:#c8431a;
+    --maxw:1180px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--void);
+    color:var(--bone);
+    font-family:'Barlow',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* grain + scanline atmosphere */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.35;
+    background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.18) 3px,transparent 4px);
+    mix-blend-mode:multiply;
+  }
+  ::selection{background:var(--acid);color:var(--void)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+  .mono{font-family:'Space Mono',monospace}
+  .eyebrow{
+    font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--acid);display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--acid);display:inline-block}
+  h1,h2,h3{font-family:'Anton',sans-serif;font-weight:400;line-height:.96;letter-spacing:.01em;text-transform:uppercase}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;
+    background:rgba(8,9,11,.6);backdrop-filter:blur(12px);
+    border-bottom:1px solid transparent;transition:border-color .3s,background .3s;
+  }
+  nav.scrolled{border-color:var(--line);background:rgba(8,9,11,.86)}
+  .brand{display:flex;align-items:center;gap:12px;font-family:'Anton',sans-serif;font-size:1.15rem;letter-spacing:.06em;text-transform:uppercase}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--acid);box-shadow:0 0 12px var(--acid);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);transition:color .2s}
+  .nav-links a:hover{color:var(--bone)}
+  .nav-cta{
+    border:1px solid var(--acid);color:var(--acid)!important;padding:9px 16px;border-radius:2px;transition:all .2s;
+  }
+  .nav-cta:hover{background:var(--acid);color:var(--void)!important}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px}
+  .burger span{width:24px;height:2px;background:var(--bone);transition:.3s}
+
+  /* ---------- HERO ---------- */
+  header{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(circle at 78% 30%,rgba(62,240,122,.10),transparent 42%),
+      radial-gradient(circle at 15% 80%,rgba(255,90,31,.08),transparent 45%),
+      linear-gradient(180deg,var(--void),var(--steel-900));
+  }
+  .hero-grid{position:absolute;inset:0;z-index:0;opacity:.4;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:64px 64px;mask-image:radial-gradient(circle at 70% 40%,#000,transparent 75%);
+    -webkit-mask-image:radial-gradient(circle at 70% 40%,#000,transparent 75%);
+  }
+  .hero-inner{display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center;width:100%}
+  .hero-copy>*{opacity:0;transform:translateY(22px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  .hero-copy .eyebrow{animation-delay:.05s}
+  .hero-copy h1{animation-delay:.18s}
+  .hero-copy .lead{animation-delay:.32s}
+  .hero-copy .cta-row{animation-delay:.46s}
+  .hero-copy .stat-row{animation-delay:.6s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .hero-copy h1{font-size:clamp(3.2rem,8vw,6.6rem);margin:22px 0 0}
+  .hero-copy h1 .green{color:var(--acid);text-shadow:0 0 32px rgba(62,240,122,.4)}
+  .lead{font-size:clamp(1.05rem,1.7vw,1.3rem);color:var(--ash);max-width:32ch;margin:24px 0 36px;font-weight:500}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{font-family:'Space Mono',monospace;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;
+    padding:15px 26px;border-radius:2px;transition:all .22s;cursor:pointer;border:1px solid transparent;display:inline-flex;align-items:center;gap:10px}
+  .btn-ember{background:var(--ember);color:#fff}
+  .btn-ember:hover{background:var(--ember-dim);transform:translateY(-2px);box-shadow:0 10px 30px -8px rgba(255,90,31,.55)}
+  .btn-ghost{border-color:var(--line);color:var(--bone)}
+  .btn-ghost:hover{border-color:var(--acid);color:var(--acid)}
+  .stat-row{display:flex;gap:34px;margin-top:48px;border-top:1px solid var(--line);padding-top:24px}
+  .stat .n{font-family:'Anton',sans-serif;font-size:1.9rem;color:var(--bone)}
+  .stat .l{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ash-dim)}
+
+  /* emblem (swap for real skull art — see note) */
+  .emblem-wrap{display:flex;justify-content:center;align-items:center;position:relative;opacity:0;animation:rise 1s .4s forwards}
+  .emblem{position:relative;width:min(360px,80%);aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle at 50% 38%,var(--steel-700),var(--steel-900) 70%);
+    border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 0 80px -20px rgba(62,240,122,.25),inset 0 0 60px rgba(0,0,0,.6);
+  }
+  .emblem::before{content:"";position:absolute;inset:14px;border:1px dashed var(--steel-600);border-radius:50%;animation:spin 60s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .emblem .skull{font-family:'Anton',sans-serif;font-size:4.6rem;color:var(--bone);line-height:1;letter-spacing:-.04em}
+  .emblem .eye{position:absolute;top:38%;width:14px;height:14px;border-radius:50%;background:var(--acid);box-shadow:0 0 24px var(--acid);animation:pulse 2s infinite}
+  .emblem .eye.l{left:42%}.emblem .eye.r{right:42%}
+  .emblem .tag{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.3em;color:var(--ash);margin-top:14px;text-transform:uppercase}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--steel-900);overflow:hidden;position:relative;z-index:2}
+  .marquee-track{display:flex;white-space:nowrap;animation:scroll 28s linear infinite}
+  .marquee-track span{font-family:'Anton',sans-serif;font-size:1.5rem;text-transform:uppercase;letter-spacing:.05em;color:var(--steel-600);padding:18px 28px;display:flex;align-items:center;gap:28px}
+  .marquee-track span b{color:var(--acid);font-weight:400}
+  .marquee-track span::after{content:"◆";color:var(--ember);font-size:.7rem}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* ---------- SECTIONS ---------- */
+  section{position:relative;z-index:2;padding:110px 0}
+  .sec-head{max-width:620px;margin-bottom:60px}
+  .sec-head h2{font-size:clamp(2.2rem,5vw,3.6rem);margin:18px 0 0}
+  .sec-head p{color:var(--ash);font-size:1.08rem;margin-top:18px;font-weight:500}
+
+  /* services grid */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .card{background:var(--steel-900);border:1px solid var(--line);border-radius:4px;padding:34px 30px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+  .card::before{content:attr(data-num);position:absolute;top:18px;right:24px;font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ash-dim);letter-spacing:.15em}
+  .card:hover{border-color:var(--acid);transform:translateY(-4px)}
+  .card .ico{font-size:1.6rem;color:var(--acid);margin-bottom:18px}
+  .card h3{font-size:1.45rem;margin-bottom:12px}
+  .card p{color:var(--ash);font-size:.98rem}
+
+  /* metal forge spotlight */
+  .forge{background:linear-gradient(180deg,var(--steel-900),var(--void))}
+  .forge-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  .browser{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--steel-800);box-shadow:0 40px 80px -30px rgba(0,0,0,.8)}
+  .browser-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--steel-700)}
+  .browser-bar .b{width:11px;height:11px;border-radius:50%;background:var(--steel-600)}
+  .browser-bar .url{margin-left:14px;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ash);background:var(--steel-900);padding:5px 14px;border-radius:20px;flex:1}
+  .browser-body{padding:40px 30px;text-align:center}
+  .browser-body .big{font-family:'Anton',sans-serif;font-size:2.6rem;color:var(--ember);text-transform:uppercase;line-height:.95}
+  .browser-body .sub{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ash);letter-spacing:.2em;text-transform:uppercase;margin-top:10px}
+  .browser-body .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:26px}
+  .browser-body .chip{font-family:'Space Mono',monospace;font-size:.66rem;border:1px solid var(--line);color:var(--ash);padding:6px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.08em}
+  .forge-copy h2{font-size:clamp(2rem,4.5vw,3.2rem)}
+  .forge-copy ul{list-style:none;margin:26px 0 32px}
+  .forge-copy li{display:flex;gap:12px;padding:9px 0;color:var(--ash);border-bottom:1px solid var(--steel-700);font-weight:500}
+  .forge-copy li::before{content:"▸";color:var(--acid)}
+
+  /* pricing */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .tier{background:var(--steel-900);border:1px solid var(--line);border-radius:4px;padding:36px 30px;display:flex;flex-direction:column;transition:.3s}
+  .tier.feature{border-color:var(--acid);box-shadow:0 0 50px -20px rgba(62,240,122,.4)}
+  .tier:hover{transform:translateY(-4px)}
+  .tier .badge{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acid);margin-bottom:14px}
+  .tier h3{font-size:1.5rem;margin-bottom:6px}
+  .tier .price{font-family:'Anton',sans-serif;font-size:3rem;color:var(--bone);line-height:1;margin:14px 0}
+  .tier .price small{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ash-dim);letter-spacing:.1em}
+  .tier ul{list-style:none;margin:18px 0 28px;flex:1}
+  .tier li{padding:8px 0;color:var(--ash);font-size:.92rem;border-bottom:1px solid var(--steel-700);display:flex;gap:10px;font-weight:500}
+  .tier li::before{content:"+";color:var(--ember);font-family:'Space Mono',monospace}
+  .tier .btn{justify-content:center;width:100%}
+
+  /* case study */
+  .case{background:linear-gradient(180deg,var(--void),var(--steel-900))}
+  .case-card{display:grid;grid-template-columns:.8fr 1.2fr;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--steel-900)}
+  .case-visual{background:radial-gradient(circle at 50% 40%,var(--steel-700),var(--steel-900));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 30px;border-right:1px solid var(--line);position:relative}
+  .case-visual .skull-sm{font-family:'Anton',sans-serif;font-size:3.4rem;color:var(--ember);text-transform:uppercase;text-align:center;line-height:.9}
+  .case-visual .genre{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.2em;color:var(--ash);text-transform:uppercase;margin-top:16px}
+  .case-body{padding:46px 44px}
+  .case-body .eyebrow{margin-bottom:16px}
+  .case-body h3{font-size:2rem;margin-bottom:14px}
+  .case-body p{color:var(--ash);margin-bottom:14px;font-weight:500}
+  .case-body .deliv{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .case-body .deliv span{font-family:'Space Mono',monospace;font-size:.66rem;border:1px solid var(--line);color:var(--acid);padding:6px 12px;border-radius:2px;text-transform:uppercase;letter-spacing:.06em}
+
+  /* contact */
+  .contact{text-align:center;padding:130px 0}
+  .contact h2{font-size:clamp(2.6rem,7vw,5.2rem);margin-bottom:20px}
+  .contact h2 .green{color:var(--acid)}
+  .contact p{color:var(--ash);font-size:1.1rem;max-width:46ch;margin:0 auto 38px;font-weight:500}
+  .contact .mail{font-family:'Space Mono',monospace;color:var(--ash);font-size:.85rem;margin-top:26px;letter-spacing:.08em}
+  .contact .mail a{color:var(--acid)}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:50px 0 40px;background:var(--steel-900);position:relative;z-index:2}
+  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:30px}
+  .foot-brand .brand{margin-bottom:12px}
+  .foot-brand p{color:var(--ash-dim);font-family:'Space Mono',monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase}
+  .foot-links{display:flex;gap:50px;flex-wrap:wrap}
+  .foot-col h4{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash-dim);margin-bottom:14px}
+  .foot-col a{display:block;color:var(--ash);font-size:.9rem;padding:4px 0;transition:color .2s;font-weight:500}
+  .foot-col a:hover{color:var(--acid)}
+  .foot-bottom{margin-top:44px;padding-top:24px;border-top:1px solid var(--steel-700);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--ash-dim);font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:880px){
+    .nav-links{position:fixed;inset:64px 0 auto 0;flex-direction:column;background:var(--steel-900);border-bottom:1px solid var(--line);padding:24px 28px;gap:20px;transform:translateY(-130%);transition:transform .35s;align-items:flex-start}
+    .nav-links.open{transform:none}
+    .burger{display:flex}
+    .hero-inner,.forge-grid,.case-card,.cards,.tiers{grid-template-columns:1fr}
+    .emblem-wrap{order:-1;margin-bottom:10px}
+    .emblem{width:min(240px,60%)}
+    .case-visual{border-right:none;border-bottom:1px solid var(--line)}
+    .stat-row{gap:24px;flex-wrap:wrap}
+    section{padding:80px 0}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#top" class="brand"><span class="dot"></span>Synthetic&nbsp;Faction</a>
+  <div class="nav-links" id="navlinks">
+    <a href="#studio">Studio</a>
+    <a href="#forge">Metal Forge</a>
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#contact" class="nav-cta">Start a Project</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">AI Creative Studio · Est. 2026</span>
+        <h1>Forging<br><span class="green">Digital</span> Grit</h1>
+        <p class="lead">An AI-powered creative studio for independent bands and labels. Press kits, artwork, and the tools to make machines speak your language.</p>
+        <div class="cta-row">
+          <a href="#services" class="btn btn-ember">Get an EPK →</a>
+          <a href="#forge" class="btn btn-ghost">Explore Metal Forge</a>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="n">EPK</div><div class="l">Press Kits</div></div>
+          <div class="stat"><div class="n">AI</div><div class="l">Artwork & Bios</div></div>
+          <div class="stat"><div class="n">∞</div><div class="l">Genre-Agnostic</div></div>
+        </div>
+      </div>
+      <div class="emblem-wrap">
+        <!-- SWAP THIS BLOCK for your real skull logo: <img src="logo.png" alt="Synthetic Faction" style="width:min(360px,80%)"> -->
+        <div class="emblem">
+          <span class="eye l"></span><span class="eye r"></span>
+          <div class="skull">SF</div>
+          <div class="tag">Synthetic Faction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Forging Digital <b>Grit</b></span><span>AI Press <b>Kits</b></span><span>Suno + Udio <b>Prompts</b></span><span>Album <b>Artwork</b></span><span>Built for <b>Bands</b></span>
+    <span>Forging Digital <b>Grit</b></span><span>AI Press <b>Kits</b></span><span>Suno + Udio <b>Prompts</b></span><span>Album <b>Artwork</b></span><span>Built for <b>Bands</b></span>
+  </div>
+</div>
+
+<section id="studio">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">What We Do</span>
+      <h2>A Studio That Speaks Both Languages</h2>
+      <p>Most AI services are generic. Synthetic Faction lives at the intersection of the independent music world and the machines reshaping it — and we know both.</p>
+    </div>
+    <div class="cards">
+      <div class="card reveal" data-num="01">
+        <div class="ico">⚒</div>
+        <h3>Electronic Press Kits</h3>
+        <p>Professionally written bios, designed one-sheet PDFs, and full long-form biographies — built around your real story, never a template.</p>
+      </div>
+      <div class="card reveal" data-num="02">
+        <div class="ico">◣</div>
+        <h3>AI Artwork & Assets</h3>
+        <p>Promotional artwork, cover art, and social-ready visuals generated and refined to match your sound and your scene.</p>
+      </div>
+      <div class="card reveal" data-num="03">
+        <div class="ico">⟁</div>
+        <h3>Prompt Engineering</h3>
+        <p>We help you get the most out of Suno and Udio — turning a vibe into precise style prompts for demos, concepts, and label pitches.</p>
+      </div>
+      <div class="card reveal" data-num="04">
+        <div class="ico">▤</div>
+        <h3>Metal Forge</h3>
+        <p>Our flagship product. A free, multi-genre prompt suite that engineers exactly what you want out of AI music platforms.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="forge" class="forge">
+  <div class="wrap">
+    <div class="forge-grid">
+      <div class="browser reveal">
+        <div class="browser-bar">
+          <span class="b"></span><span class="b"></span><span class="b"></span>
+          <span class="url">metal-forge-generator.vercel.app</span>
+        </div>
+        <div class="browser-body">
+          <div class="big">Metal Forge</div>
+          <div class="sub">Forge the Track</div>
+          <div class="chips">
+            <span class="chip">Style Prompts</span><span class="chip">Lyrics</span>
+            <span class="chip">Album Art</span><span class="chip">Any Genre</span>
+            <span class="chip">No Sign-Up</span>
+          </div>
+        </div>
+      </div>
+      <div class="forge-copy reveal">
+        <span class="eyebrow">The Flagship</span>
+        <h2 style="margin-top:16px">It Doesn't Make AI Music. It Makes You Better At It.</h2>
+        <p class="lead" style="max-width:100%">Metal Forge is a prompt suite, not a generator — closer to a mixing board than a music machine. It helps you tell Suno and Udio exactly what you want.</p>
+        <ul>
+          <li>Craft precise style prompts for any genre</li>
+          <li>Generate lyrics and concepts in seconds</li>
+          <li>Create matching album artwork on the fly</li>
+          <li>Free to use — no account required</li>
+        </ul>
+        <a href="https://metal-forge-generator.vercel.app/" target="_blank" rel="noopener" class="btn btn-ember">Open Metal Forge →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">EPK Packages</span>
+      <h2>Press Kits That Get You In The Door</h2>
+      <p>Submit your band name, genre, influences, photos, and the story. We deliver a press kit ready to send to labels, booking agents, press, and festivals.</p>
+    </div>
+    <div class="tiers">
+      <div class="tier reveal">
+        <div class="badge">Starter</div>
+        <h3>The One-Sheet</h3>
+        <div class="price">$149<small> / one-time</small></div>
+        <ul>
+          <li>AI-written short & full bio</li>
+          <li>Designed one-sheet PDF</li>
+          <li>Discography + links section</li>
+          <li>1 round of revisions</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Start →</a>
+      </div>
+      <div class="tier feature reveal">
+        <div class="badge">Most Popular</div>
+        <h3>The Press Kit</h3>
+        <div class="price">$299<small> / one-time</small></div>
+        <ul>
+          <li>Everything in Starter</li>
+          <li>Long-form biography (Word)</li>
+          <li>1 piece of promo artwork</li>
+          <li>Pull quotes + press formatting</li>
+          <li>2 rounds of revisions</li>
+        </ul>
+        <a href="#contact" class="btn btn-ember">Start →</a>
+      </div>
+      <div class="tier reveal">
+        <div class="badge">Full Launch</div>
+        <h3>The Arsenal</h3>
+        <div class="price">$499<small> / one-time</small></div>
+        <ul>
+          <li>Everything in Press Kit</li>
+          <li>Full social asset pack</li>
+          <li>Suno/Udio style prompt package</li>
+          <li>Cover art concepts</li>
+          <li>Unlimited revisions (30 days)</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Start →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="case">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Selected Work</span>
+      <h2>Proof, Not Promises</h2>
+    </div>
+    <div class="case-card reveal">
+      <div class="case-visual">
+        <div class="skull-sm">Nothing<br>New In<br>Heaven</div>
+        <div class="genre">Melodic Death Metal · FR</div>
+      </div>
+      <div class="case-body">
+        <span class="eyebrow">Case Study 001</span>
+        <h3>A Full EPK For NNIH</h3>
+        <p>French melodic death metal duo Nothing New In Heaven came with a great story — including a Children of Bodom tour-bus origin tale that's pure press gold.</p>
+        <p>We built the complete package: a punchy short bio, a full long-form biography with the narrative arc and press quotes, and a designed one-sheet ready for labels and booking.</p>
+        <div class="deliv">
+          <span>One-Sheet PDF</span><span>Long-Form Bio</span><span>Press Quotes</span><span>Booking Contact</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <span class="eyebrow" style="justify-content:center">Start a Project</span>
+    <h2 style="margin-top:20px">Let's Build<br>Something <span class="green">Loud</span></h2>
+    <p>Whether you need a press kit, artwork, or help bending AI to your sound — tell us about your band and what you're chasing.</p>
+    <a href="mailto:metalfactionradio@gmail.com?subject=Synthetic%20Faction%20Project%20Inquiry" class="btn btn-ember">Email The Studio →</a>
+    <div class="mail">or reach us directly at <a href="mailto:metalfactionradio@gmail.com">metalfactionradio@gmail.com</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><span class="dot"></span>Synthetic&nbsp;Faction</div>
+        <p>Forging Digital Grit</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h4>Studio</h4>
+          <a href="#studio">What We Do</a>
+          <a href="#services">EPK Packages</a>
+          <a href="#work">Selected Work</a>
+        </div>
+        <div class="foot-col">
+          <h4>Product</h4>
+          <a href="https://metal-forge-generator.vercel.app/" target="_blank" rel="noopener">Metal Forge</a>
+          <a href="#forge">How It Works</a>
+        </div>
+        <div class="foot-col">
+          <h4>Connect</h4>
+          <a href="mailto:metalfactionradio@gmail.com">Email</a>
+          <a href="#contact">Start a Project</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Synthetic Faction</span>
+      <span>A Metal Faction Radio venture</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // nav scroll state
+  const nav=document.getElementById('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>30));
+  // mobile menu
+  const burger=document.getElementById('burger'),links=document.getElementById('navlinks');
+  burger.addEventListener('click',()=>links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+  // scroll reveal
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
